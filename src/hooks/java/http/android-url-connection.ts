@@ -168,9 +168,8 @@ export class AndroidUrlConnectionHooker {
 
         op.flush.overload().implementation = function () {
           if (buf && buf.length > 0) {
-            console.log(`${prefix}[ Request ] Byte(UTF-8): ${buf.toString('utf-8')}`);
-            console.log(`${prefix}[ Request ] Byte(Hex): ${buf.toString('hex')}`);
-            console.log(`${prefix}[ Request ] Byte(Base64): ${buf.toString('base64')}`);
+            console.log(`${prefix}[ Request ] Body(UTF-8): ${buf.toString('utf-8')}`);
+            console.log(`${prefix}[ Request ] Body(Hex): ${buf.toString('hex')}`);
 
             buf = Buffer.alloc(0);
           }
