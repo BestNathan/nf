@@ -102,7 +102,7 @@ export class OkHttpHooker {
 
             const responseBodyWrapper: Java.Wrapper<IOkHttpResponseBody> = responseWrapper.body();
 
-            if (responseBodyWrapper) {
+            if (responseBodyWrapper && responseBodyWrapper.contentType()) {
               const contentType = responseBodyWrapper.contentType().toString() as string;
               console.log(`${prefix}[ Response ] Body-Content-Type: ${contentType}`);
               console.log(`${prefix}[ Response ] Body-Content-Length: ${responseBodyWrapper.contentLength()}`);

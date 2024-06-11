@@ -18,7 +18,7 @@ if (Java.available) {
 
   // http
   HookerRegistry.register('java.http.URL', URLHooker);
-  HookerRegistry.register('java.http.UrlConnection', AndroidUrlConnectionHooker);
+  // HookerRegistry.register('java.http.UrlConnection', AndroidUrlConnectionHooker);
   HookerRegistry.register('java.http.OkHttp', OkHttpHooker);
-  HookerRegistry.register('java.http.AndroidOkHttp', AndroidOkHttpHooker);
+  // HookerRegistry.register('java.http.AndroidOkHttp', AndroidOkHttpHooker);
 }

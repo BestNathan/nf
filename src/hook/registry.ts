@@ -1,4 +1,4 @@
-import {HookerCtor} from './hooker';
+import {HookerCtor} from './hooker.js';
 
 class Registry {
   private map: Map<string, HookerCtor> = new Map();

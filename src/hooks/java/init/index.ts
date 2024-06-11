@@ -1,4 +1,4 @@
-import {IHooker} from '../../../hook/hooker';
+import {IHooker} from '../../../hook/hooker.js';
 
 export class InitHooker implements IHooker {
   hook(): void {

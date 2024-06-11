@@ -10,6 +10,7 @@ export interface JavaCryptoCipher {
   getInstance: Java.MethodDispatcher;
   doFinal: Java.MethodDispatcher;
   init: Java.MethodDispatcher;
+  opmode: Java.Field;
 }
 
 export interface JavaCryptoAlgorithmParameterSpec {}
@@ -99,7 +100,11 @@ export class CipherHooker implements IHooker {
     this.JavaxCryptoCipherWrapper.doFinal.overload('[B').implementation = function (data: ArrayBuffer) {
       const prefix = `[ ${hooker.tracingContext.get(this)} ][ ${this.$className} ][ .doFinal([B) ]`;
 
+      const opmode = this.opmode.value;
+      console.log(`${prefix} OpMode: ${opmode}(${OpMode[opmode] ?? 'UnKnown'})`);
+
       console.log(`${prefix} Data(UTF8): ${Buffer.from(data).toString('utf-8')}`);
+      console.log(`${prefix} Data(Base64): ${Buffer.from(data).toString('base64')}`);
       console.log(`${prefix} Data(HEX): ${Buffer.from(data).toString('hex')}`);
 
       const final = this.doFinal(data);
@@ -107,16 +112,29 @@ export class CipherHooker implements IHooker {
       console.log(`${prefix} Res(HEX): ${Buffer.from(final).toString('hex')}`);
       console.log(`${prefix} Res(Base64): ${Buffer.from(final).toString('base64')}`);
 
+      if (opmode == OpMode.DECRYPT_MODE) {
+        console.log(`${prefix} Res(UTF8): ${Buffer.from(final).toString('utf-8')}`);
+      }
+
+
       hooker.tracingContext.delete(this);
       return final;
     };
 
     this.JavaxCryptoCipherWrapper.doFinal.overload().implementation = function () {
       const prefix = `[ ${hooker.tracingContext.get(this)} ][ ${this.$className} ][ .doFinal() ]`;
+
+      const opmode = this.opmode.value;
+      console.log(`${prefix} OpMode: ${opmode}(${OpMode[opmode] ?? 'UnKnown'})`);
+
       const final = this.doFinal();
 
       console.log(`${prefix} Res(HEX): ${Buffer.from(final).toString('hex')}`);
       console.log(`${prefix} Res(Base64): ${Buffer.from(final).toString('base64')}`);
+
+      if (opmode == OpMode.DECRYPT_MODE) {
+        console.log(`${prefix} Res(UTF8): ${Buffer.from(final).toString('utf-8')}`);
+      }
 
       hooker.tracingContext.delete(this);
       return final;
